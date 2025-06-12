@@ -1,3 +1,4 @@
+//Main game function
 let playGame = () => {
   //Initialize scores
   let humanScore = 0;
@@ -6,22 +7,32 @@ let playGame = () => {
   //Rock, paper, scissors logic
   let playRound = (humanChoice, computerChoice) => {
     humanChoice.toLowerCase();
-    return humanChoice === "rock" && computerChoice === "paper"
-      ? (console.log("You lose! Paper beats rock!"), computerScore++)
-      : humanChoice === "rock" && computerChoice === "scissors"
-      ? (console.log("You win! Rock beats scissors!"), humanScore++)
-      : humanChoice === "paper" && computerChoice === "scissors"
-      ? (console.log("You lose! Scissors beats paper!"), computerScore++)
-      : humanChoice === "paper" && computerChoice === "rock"
-      ? (console.log("You win! Paper beats rock!"), humanScore++)
-      : humanChoice === "scissor" && computerChoice === "rock"
-      ? (console.log("You lose! Rock beats scissors!"), computerScore++)
-      : humanChoice === "scissor" && computerChoice === "paper"
-      ? (console.log("You win! Scissor beats paper!"), humanScore++)
-      : console.log("It's a tie!");
+
+    const humanWinCondition =
+      (humanChoice === "paper" && computerChoice === "rock") ||
+      (humanChoice === "rock" && computerChoice === "scissors") ||
+      (humanChoice === "scissor" && computerChoice === "paper");
+    const computerWinCondition =
+      (humanChoice === "rock" && computerChoice === "paper") ||
+      (humanChoice === "paper" && computerChoice === "scissors") ||
+      (humanChoice === "scissor" && computerChoice === "rock");
+
+    if (humanChoice === computerChoice) {
+      return console.log("It's a tie! Both picked " + humanChoice + ".");
+    } else if (humanWinCondition) {
+      humanScore++;
+      return console.log(
+        "You win! " + humanChoice + " beats " + computerChoice + "!"
+      );
+    } else if (computerWinCondition) {
+      computerScore++;
+      return console.log(
+        "You lose! " + computerChoice + " beats " + humanChoice + "!"
+      );
+    }
   };
 
-  //Rounds loop - change amount of rounds by adjusting the loop value
+  //Loop up to 5 rounds
   for (let i = 0; i < 5; i++) {
     const humanSelection = getHumanChoice();
     const computerSelection = getComputerChoice();
@@ -58,11 +69,10 @@ let playGame = () => {
 
 //Generate computer answer
 let getComputerChoice = () => {
-  let computerChoice = Math.floor(Math.random() * 100) + 1;
-  console.log(computerChoice);
-  return computerChoice > 66
+  let computerChoice = Math.floor(Math.random() * 3) + 1;
+  return computerChoice === 3
     ? "rock"
-    : computerChoice < 33
+    : computerChoice === 2
     ? "paper"
     : "scissors";
 };
@@ -70,7 +80,6 @@ let getComputerChoice = () => {
 //Prompt user choice
 let getHumanChoice = () => {
   let humanChoice = prompt("Rock, Paper, or Scissors?", "");
-  console.log(humanChoice);
   return humanChoice;
 };
 
